@@ -12,7 +12,7 @@
 
 CLEAR_SCREEN = \x1b[1J \x1b[H
 
-SRCS = pipex.c
+SRCS = pipex.c utils_pipex.c childs.c
 DIR_SRC = ./src
 DIR_OBJ = $(DIR_SRC)/obj
 OBJS = $(addprefix $(DIR_OBJ)/, $(SRCS:.c=.o))
@@ -49,6 +49,7 @@ $(DIR_OBJ)/%.o:		$(DIR_SRC)/%.c Makefile
 ${NAME}:	${OBJS} ./inc/pipex.h
 				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME}
 				echo -n "$(CLEAR_SCREEN)"
+				echo $(NAME) compiled!
 
 # bonus: libft ${NAME}
 
@@ -71,4 +72,4 @@ re:			fclean all
 -include ${DEPS} ${DEPS_B}
 
 .PHONY:		clean fclean re all libft bonus
-#.SILENT:
+.SILENT:

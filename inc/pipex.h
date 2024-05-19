@@ -13,20 +13,43 @@
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "../src/libft/libft.h"
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
+// write, read, close, access, pipe, dup, dup2, execve, fork
 # include <unistd.h>
-#include <string.h>
+# include <sys/types.h>
+# include <sys/uio.h>
+// malloc, free, exit
+# include <stdlib.h>
+// open, unlink
+# include <fcntl.h>
+// waitpid, wait
+# include <sys/wait.h>
+// strerror 
+# include <string.h>
+// perror
+# include <stdio.h>
+// Lift 
+# include "../src/libft/libft.h"
 
-# define ERROR_ARG "Error\n"
-# define ERROR_CHAR_NOT_VALID "Error\n"
-# define ERROR_NUM_NOT_VALID "Error\n"
-# define ERROR_MALLOC "Error\n"
-# define ERROR_NUM_REPEATED "Error\n"
+typedef struct s_pipex
+{
+	pid_t     pid1;
+	pid_t     pid2;
+	int       tube[2];
+	int       infile;
+	int       outfile;
+	char			*cmd;
+	char			**cmd_args;
+	char      **paths;
+}           t_pipex;
 
 // main
 
+// utils
+void				ft_errors(char *str);
+char				**ft_get_path(char **e);
+// Childs
+char  *check_cmd(char **paths, char *argv);
+void  first_child(t_pipex pipex, char **argv, char **env);
+void  second_child(t_pipex pipex, char **argv, char **env);
 
 #endif
