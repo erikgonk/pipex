@@ -94,7 +94,7 @@ static int	printea(int fd, const char str, int len, va_list args)
 	else if (str == 's')
 		putstr(fd, va_arg(args, char *), &len);
 	else if (str == 'c')
-		len += ft_putchar_error(1, va_arg(args, int));
+		len += ft_putchar_error(fd, va_arg(args, int));
 	else if (str == 'd' || str == 'i')
 		putnb(va_arg(args, int), 10, c, &len);
 	else if (str == 'u')
@@ -104,7 +104,7 @@ static int	printea(int fd, const char str, int len, va_list args)
 	else if (str == 'p')
 		unsign(va_arg(args, unsigned long), &len, 16, 112);
 	else if (str == '%')
-		len += ft_putchar_error(1, '%');
+		len += ft_putchar_error(fd, '%');
 	return (len);
 }
 
@@ -123,7 +123,7 @@ int	ft_fd_printf(int fd, const char *str, ...)
 		if (str[j] == '%')
 			error = printea(fd, str[++j], 0, args);
 		else
-			error = ft_putchar_error(1, str[j]);
+			error = ft_putchar_error(fd, str[j]);
 		if (error == -1)
 		{
 			va_end(args);

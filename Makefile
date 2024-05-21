@@ -10,13 +10,10 @@
 #                                                                              #
 # **************************************************************************** #
 
-CLEAR_SCREEN = \x1b[1J \x1b[H
-
-SRCS = pipex.c utils_pipex.c childs.c
+SRCS = pipex.c childs.c
 DIR_SRC = ./src
 DIR_OBJ = $(DIR_SRC)/obj
 OBJS = $(addprefix $(DIR_OBJ)/, $(SRCS:.c=.o))
-DEPS = $(addprefix $(DIR_OBJ)/, $(SRCS:.c=.d))
 NAME	= pipex
 
 # SRCS_B = push_swap_bonus.c utils_push_swap_bonus.c \
@@ -25,7 +22,6 @@ NAME	= pipex
 # 			swap_bonus.c push_bonus.c rotate_bonus.c reverse_rotate_bonus.c
 # DIR_OBJ_B = $(DIR_SRC)/obj
 # OBJS_B = $(addprefix $(DIR_OBJ_B)/, $(SRCS_B:.c=.o))
-# DEPS_B = $(addprefix $(DIR_OBJ_B)/, $(SRCS_B:.c=.d))
 
 LIB		= src/libft/libft.a
 
@@ -33,7 +29,7 @@ AR		= ar rcs
 
 RM		 = rm -fr
 
-CFLAGS	= -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
 
 CC = gcc
 
@@ -48,28 +44,26 @@ $(DIR_OBJ)/%.o:		$(DIR_SRC)/%.c Makefile
 
 ${NAME}:	${OBJS} ./inc/pipex.h
 				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME}
-				echo -n "$(CLEAR_SCREEN)"
+#				clear
 				echo $(NAME) compiled!
 
 # bonus: libft ${NAME}
 
 # ${NAME_B}:	${OBJS_B} ./inc/push_swap_bonus.h
 # 				${CC} ${CFLAGS} ${OBJS_B} ${LIB} -o ${NAME}
-# 				echo -n "$(CLEAR_SCREEN)"
+# 					clear
 
 clean:
 				make clean -C src/libft
-				${RM} ${OBJS} ${DEPS} ${OBJS_B} ${DEPS_B}
-				echo -n "$(CLEAR_SCREEN)"
+				${RM} ${OBJS} ${OBJS_B}
+#				clear
 
 fclean:		clean
 				make fclean -C src/libft 
 				${RM} ${NAME} ${NAME_B} ${DIR_OBJ} ${DIR_OBJ_B}
-				echo -n "$(CLEAR_SCREEN)"
+#				clear
 
 re:			fclean all
-
--include ${DEPS} ${DEPS_B}
 
 .PHONY:		clean fclean re all libft bonus
 .SILENT:

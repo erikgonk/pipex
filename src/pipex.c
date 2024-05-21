@@ -12,28 +12,52 @@
 
 #include "../inc/pipex.h"
 
-int main(int argc, char **argv, char **env)
+void	ft_errors(char *str, int error)
 {
-  t_pipex     pipex;
+	perror(str);
+	exit (error);
+}
 
-  if (argc != 5)
-    ft_errors("4 Args Needed");
-  pipex.paths = ft_get_path(env);
-  pipex.infile = open(argv[1], O_RDONLY);
-  if (pipex.infile < 0)
-		ft_errors("Opening Infile");
-	pipex.outfile = open(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR, 0000644);
+char	**ft_get_path(char **e, t_pipex pipex)
+{
+	char		**res;
+
+	while (*e && ft_strncmp("PATH", *e, 4))
+	{
+		e++;
+		printf("%s\n", *e);
+		if (!*e)
+			ft_errors(*e, 1);
+	}	
+	*e += 5;
+	res = ft_split(*e, ':');
+	return (res);
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_pipex		pipex;
+
+	if (argc != 5)
+		ft_errors("args", 128);
+	pipex.paths = ft_get_path(env, pipex);
+	pipex.infile = open(argv[1], O_RDONLY);
+	if (pipex.infile < 0)
+		ft_errors("Opening Infile", 1);
+	pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex.outfile < 0)
-		ft_errors("Opening Outfile");
-  if (pipe(pipex.tube) < 0)
-    ft_errors("Pipe Function");
-  pipex.pid1 = fork();
-  if (pipex.pid1 == 0)
-    first_child(pipex, argv, env);
-  pipex.pid2 = fork();
-  if (pipex.pid2 == 0)
-    first_child(pipex, argv, env);
-  // waitpid(pipex.pid1, NULL, 0);
-	// waitpid(pipex.pid2, NULL, 0);
-  exit (0);
+		ft_errors("Opening Outfile", 1);
+	if (pipe(pipex.tube) < 0)
+		ft_errors("Pipe Function", 1);
+	pipex.pid1 = fork();
+	if (pipex.pid1 == 0)
+		first_child(pipex, argv, env);
+	pipex.pid2 = fork();
+	if (pipex.pid2 == 0)
+		second_child(pipex, argv, env);
+	waitpid(pipex.pid1, NULL, -1);
+	waitpid(pipex.pid2, NULL, -1);
+	close(pipex.infile);
+	close(pipex.outfile);
+	exit (0);
 }

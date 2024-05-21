@@ -16,25 +16,3 @@ int	ft_putchar_error(int fd, char c)
 {
 	return (write(fd, &c, 1));
 }
-
-// void	ft_bzero(void *s, size_t n)
-// {
-// 	while (n-- > 0)
-// 		*((unsigned char *)s++) = 0;
-// }
-// 
-// char	*ft_strchr2(const char *s, int c)
-// {
-// 	size_t		i;
-
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		if (s[i] == (char)c)
-// 			return ((char *)(s + i));
-// 		i++;
-// 	}
-// 	if (s[i] == (char)c)
-// 		return ((char *)(s + i));
-// 	return (0);
-// }

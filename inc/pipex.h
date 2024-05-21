@@ -45,8 +45,8 @@ typedef struct s_pipex
 // main
 
 // utils
-void				ft_errors(char *str);
-char				**ft_get_path(char **e);
+void				ft_errors(char *str, int error);
+char				**ft_get_path(char **e, t_pipex pipex);
 // Childs
 char  *check_cmd(char **paths, char *argv);
 void  first_child(t_pipex pipex, char **argv, char **env);
