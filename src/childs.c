@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 17:54:07 by erigonza          #+#    #+#             */
-/*   Updated: 2024/05/19 17:54:08 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/05/23 17:28:52 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,13 @@ void	first_child(t_pipex pipex, char **argv, char **env)
 		pipex.cmd = check_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
 	{
-		perror("Cmd 1 Not Found");
+		if (pipex.infile < 0)
+			return ;
+		perror(argv[2]);
 		return ;
 	}
+	if (pipex.infile != 0)
+		exit(1);
 	execve(pipex.cmd, pipex.cmd_args, env);
 }
 
@@ -63,10 +67,8 @@ void	second_child(t_pipex pipex, char **argv, char **env)
 	else
 		pipex.cmd = check_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
-	{
-		write(2, "z\n", 2);
-		write(1, "a\n", 2);
-		exit (1);
-	}
+		ft_errors(argv[3], 1);
+	if (pipex.infile < 0)
+		exit(1);
 	execve(pipex.cmd, pipex.cmd_args, env);
 }

@@ -27,17 +27,18 @@ CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
 CC = gcc
 
 all:		libft ${NAME}
-				clear
 
 libft: 
 				make -C src/libft
 				mkdir -p $(DIR_OBJ)
 
 $(DIR_OBJ)/%.o:		$(DIR_SRC)/%.c Makefile
-				$(CC) -MMD $(FLAGS)  -c $< -o $@ $(INCLUDES)
+				$(CC) $(FLAGS)  -c $< -o $@ $(INCLUDES)
+				clear
 
 ${NAME}:	${OBJS} ./inc/pipex.h
 				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME}
+				clear
 
 clean:
 				make clean -C src/libft

@@ -43,12 +43,12 @@ int	main(int argc, char **argv, char **env)
 	pipex.paths = ft_get_path(env, pipex);
 	pipex.infile = open(argv[1], O_RDONLY);
 	if (pipex.infile < 0)
-		perror("Opening Infile");
+		perror(argv[1]);
 	pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex.outfile < 0)
-		perror("Opening Outfile");
+		perror(argv[argc - 1]);
 	if (pipe(pipex.tube) < 0)
-		ft_errors("Pipe Function", 1);
+		ft_errors("pipe", 126);
 	pipex.pid1 = fork();
 	if (pipex.pid1 == 0)
 		first_child(pipex, argv, env);

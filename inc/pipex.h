@@ -41,6 +41,7 @@ typedef struct s_pipex
 	char			**cmd_args;
 	char			**paths;
 	char			**errors;
+	int				bol;
 }						t_pipex;
 
 // main
