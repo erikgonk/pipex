@@ -43,7 +43,10 @@ void	first_child(t_pipex pipex, char **argv, char **env)
 	else
 		pipex.cmd = check_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
-		ft_errors("Path Not Found", 126);
+	{
+		perror("Cmd 1 Not Found");
+		return ;
+	}
 	execve(pipex.cmd, pipex.cmd_args, env);
 }
 
@@ -60,7 +63,6 @@ void	second_child(t_pipex pipex, char **argv, char **env)
 	else
 		pipex.cmd = check_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
-		ft_errors("Path Not Found", 1);
-	printf("%s\n", pipex.cmd);
+		ft_errors("Cmd 2 Not Found", 1);
 	execve(pipex.cmd, pipex.cmd_args, env);
 }

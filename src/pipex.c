@@ -21,16 +21,16 @@ void	ft_errors(char *str, int error)
 char	**ft_get_path(char **e, t_pipex pipex)
 {
 	char		**res;
+	int			i;
 
-	while (*e && ft_strncmp("PATH", *e, 4))
+	i = -1;
+	while (e[++i] && ft_strncmp("PATH", e[i], 4))
 	{
-		e++;
-		printf("%s\n", *e);
-		if (!*e)
-			ft_errors(*e, 1);
-	}	
-	*e += 5;
-	res = ft_split(*e, ':');
+		if (!e[i + 1])
+			ft_errors(e[i], 1);
+	}
+	res = ft_split(e[i], ':');
+	*res += 5;
 	return (res);
 }
 
@@ -43,10 +43,10 @@ int	main(int argc, char **argv, char **env)
 	pipex.paths = ft_get_path(env, pipex);
 	pipex.infile = open(argv[1], O_RDONLY);
 	if (pipex.infile < 0)
-		ft_errors("Opening Infile", 1);
+		perror("Opening Infile");
 	pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex.outfile < 0)
-		ft_errors("Opening Outfile", 1);
+		perror("Opening Outfile");
 	if (pipe(pipex.tube) < 0)
 		ft_errors("Pipe Function", 1);
 	pipex.pid1 = fork();

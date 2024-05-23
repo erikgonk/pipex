@@ -27,29 +27,28 @@
 # include <string.h>
 // perror
 # include <stdio.h>
-// Lift 
+// lift 
 # include "../src/libft/libft.h"
 
 typedef struct s_pipex
 {
-	pid_t     pid1;
-	pid_t     pid2;
-	int       tube[2];
-	int       infile;
-	int       outfile;
+	pid_t			pid1;
+	pid_t			pid2;
+	int				tube[2];
+	int				infile;
+	int				outfile;
 	char			*cmd;
 	char			**cmd_args;
-	char      **paths;
-}           t_pipex;
+	char			**paths;
+	char			**errors;
+}						t_pipex;
 
 // main
-
-// utils
 void				ft_errors(char *str, int error);
 char				**ft_get_path(char **e, t_pipex pipex);
 // Childs
-char  *check_cmd(char **paths, char *argv);
-void  first_child(t_pipex pipex, char **argv, char **env);
-void  second_child(t_pipex pipex, char **argv, char **env);
+char				*check_cmd(char **paths, char *argv);
+void				first_child(t_pipex pipex, char **argv, char **env);
+void				second_child(t_pipex pipex, char **argv, char **env);
 
 #endif
