@@ -63,6 +63,10 @@ void	second_child(t_pipex pipex, char **argv, char **env)
 	else
 		pipex.cmd = check_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
-		ft_errors("Cmd 2 Not Found", 1);
+	{
+		write(2, "z\n", 2);
+		write(1, "a\n", 2);
+		exit (1);
+	}
 	execve(pipex.cmd, pipex.cmd_args, env);
 }
