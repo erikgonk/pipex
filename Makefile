@@ -6,7 +6,7 @@
 #    By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/15 18:54:49 by erigonza          #+#    #+#              #
-#    Updated: 2024/05/15 18:54:55 by erigonza         ###   ########.fr        #
+#    Updated: 2024/05/24 18:53:51 by erigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,11 @@ libft:
 				make -C src/libft
 				mkdir -p $(DIR_OBJ)
 
-$(DIR_OBJ)/%.o:		$(DIR_SRC)/%.c Makefile
+$(DIR_OBJ)/%.o:		$(DIR_SRC)/%.c Makefile ./inc/pipex.h
 				$(CC) $(FLAGS)  -c $< -o $@ $(INCLUDES)
 				clear
 
-${NAME}:	${OBJS} ./inc/pipex.h
+${NAME}:	${OBJS}
 				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME}
 				clear
 
