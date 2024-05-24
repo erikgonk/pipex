@@ -43,12 +43,7 @@ void	first_child(t_pipex pipex, char **argv, char **env)
 	else
 		pipex.cmd = check_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
-	{
-		if (pipex.infile < 0)
-			return ;
-		perror(argv[2]);
-		return ;
-	}
+		exit ((ft_fd_printf(2, "%s: command not found\n", argv[2]) * 0) + 1);
 	if (pipex.infile != 0)
 		exit(1);
 	execve(pipex.cmd, pipex.cmd_args, env);
@@ -61,6 +56,8 @@ void	second_child(t_pipex pipex, char **argv, char **env)
 	close(pipex.tube[1]);
 	dup2(pipex.outfile, 1);
 	close(pipex.outfile);
+	if (pipex.infile < 0)
+		exit(1);
 	pipex.cmd_args = ft_split(argv[3], ' ');
 	if (pipex.cmd_args[0] && (access(pipex.cmd_args[0], X_OK) == 0))
 		pipex.cmd = pipex.cmd_args[0];
@@ -68,7 +65,5 @@ void	second_child(t_pipex pipex, char **argv, char **env)
 		pipex.cmd = check_cmd(pipex.paths, pipex.cmd_args[0]);
 	if (!pipex.cmd)
 		ft_errors(argv[3], 1);
-	if (pipex.infile < 0)
-		exit(1);
 	execve(pipex.cmd, pipex.cmd_args, env);
 }
