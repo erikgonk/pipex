@@ -14,7 +14,7 @@
 
 void	ft_errors_args(int error)
 {
-	write(2, "Error\n", 6);
+	write(2, "arg: error\n", 11);
 	exit (error);
 }
 
