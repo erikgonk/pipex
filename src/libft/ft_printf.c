@@ -136,15 +136,3 @@ int	ft_fd_printf(int fd, const char *str, ...)
 	va_end(args);
 	return (count);
 }
-
-int main(void)
-{
-//	char str;
-
-//	str = 'a';
-	int i = ft_fd_printf(1, "hola%x\n", -51354);
-	printf ("---->\n%i\n", i);
-//	int i = ft_printf(" %% ");
-//	printf ("---->\n%i\n", i);
-    return 0;
-}

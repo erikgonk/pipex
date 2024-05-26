@@ -22,7 +22,9 @@ AR		= ar rcs
 
 RM		 = rm -fr
 
-CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
+INC = -I ./inc/
+
+CFLAGS	= -Wall -Wextra -Werror -g #-fsanitize=address
 
 CC = gcc
 
@@ -33,11 +35,11 @@ libft:
 				mkdir -p $(DIR_OBJ)
 
 $(DIR_OBJ)/%.o:		$(DIR_SRC)/%.c Makefile ./inc/pipex.h
-				$(CC) $(FLAGS)  -c $< -o $@ $(INCLUDES)
+				$(CC) $(FLAGS) $(INC)  -c $< -o $@
 				clear
 
 ${NAME}:	${OBJS}
-				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME}
+				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME} $(INC)
 				clear
 
 clean:

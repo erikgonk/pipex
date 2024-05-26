@@ -10,7 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "pipex.h"
+
+void	ft_errors_args(int error)
+{
+	write(2, "Error\n", 6);
+	exit (error);
+}
 
 void	ft_errors(char *str, int error)
 {
@@ -39,7 +45,7 @@ int	main(int argc, char **argv, char **env)
 	t_pipex		pipex;
 
 	if (argc != 5)
-		ft_errors("args", 128);
+		ft_errors_args(128);
 	pipex.paths = ft_get_path(env, pipex);
 	pipex.infile = open(argv[1], O_RDONLY);
 	if (pipex.infile < 0)
