@@ -3,67 +3,68 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
+/*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/05/15 16:06:48 by erigonza         ###   ########.fr       */
+/*   Created: 2024/11/06 16:48:31 by erigonza          #+#    #+#             */
+/*   Updated: 2024/11/06 16:53:47 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../inc/pipex.h"
 
-void	ft_errors_args(int error)
+/* Child process that run inside a fork, take the filein, put the output inside
+ a pipe and then close with the exec function */
+void	child_process(char **argv, char **envp, int *fd)
 {
-	write(2, "arg: error\n", 11);
-	exit (error);
+	int	filein;
+
+	filein = open(argv[1], O_RDONLY, 0777);
+	if (filein == -1)
+		error();
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(filein, STDIN_FILENO);
+	close(fd[0]);
+	execute(argv[2], envp);
 }
 
-void	ft_errors(char *str, int error)
+/* Parent process that take the data from the pipe, change the output for the
+ fileout and also close with the exec function */
+void	parent_process(char **argv, char **envp, int *fd)
 {
-	perror(str);
-	exit (error);
+	int	fileout;
+
+	fileout = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fileout == -1)
+		error();
+	dup2(fd[0], STDIN_FILENO);
+	dup2(fileout, STDOUT_FILENO);
+	close(fd[1]);
+	execute(argv[3], envp);
 }
 
-char	**ft_get_path(char **e, t_pipex pipex)
+/* Main function that run the child and parent process or display an error
+ message if arguments are wrong */
+int	main(int argc, char **argv, char **envp)
 {
-	char		**res;
-	int			i;
+	int		fd[2];
+	pid_t	pid1;
 
-	i = -1;
-	while (e[++i] && ft_strncmp("PATH", e[i], 4))
+	if (argc == 5)
 	{
-		if (!e[i + 1])
-			ft_errors(e[i], 1);
+		if (pipe(fd) == -1)
+			error();
+		pid1 = fork();
+		if (pid1 == -1)
+			error();
+		if (pid1 == 0)
+			child_process(argv, envp, fd);
+		waitpid(pid1, NULL, 0);
+		parent_process(argv, envp, fd);
 	}
-	res = ft_split(e[i], ':');
-	*res += 5;
-	return (res);
-}
-
-int	main(int argc, char **argv, char **env)
-{
-	t_pipex		pipex;
-
-	if (argc != 5)
-		ft_errors_args(128);
-	pipex.paths = ft_get_path(env, pipex);
-	pipex.infile = open(argv[1], O_RDONLY);
-	if (pipex.infile < 0)
-		perror(argv[1]);
-	pipex.outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (pipex.outfile < 0)
-		perror(argv[argc - 1]);
-	if (pipe(pipex.tube) < 0)
-		ft_errors("pipe", 126);
-	pipex.pid1 = fork();
-	if (pipex.pid1 == 0)
-		first_child(pipex, argv, env);
-	pipex.pid2 = fork();
-	if (pipex.pid2 == 0)
-		second_child(pipex, argv, env);
-	waitpid(pipex.pid1, NULL, -1);
-	waitpid(pipex.pid2, NULL, -1);
-	close(pipex.infile);
-	close(pipex.outfile);
-	exit (0);
+	else
+	{
+		ft_putstr_fd("\033[31mError: Bad arguments\n\e[0m", 2);
+		ft_putstr_fd("Ex: ./pipex <file1> <cmd1> <cmd2> <file2>\n", 1);
+	}
+	return (0);
 }

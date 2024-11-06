@@ -6,56 +6,52 @@
 #    By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/12 11:21:29 by erigonza          #+#    #+#              #
-#    Updated: 2024/04/17 12:09:14 by erigonza         ###   ########.fr        #
+#    Updated: 2024/09/20 18:04:38 by erigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#-----------------------------------VARIABLES----------------------------------#
+NAME	= libft.a
 
-NAME = libft.a
+SRCS = ft_atoi.c ft_itoa.c ft_putchar.c ft_putstr.c ft_putnbr.c ft_putchar_fd.c \
+	   ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_isalpha.c ft_isdigit.c \
+	   ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_memset.c \
+	   ft_bzero.c ft_memcmp.c ft_memmove.c ft_memchr.c ft_memcpy.c ft_calloc.c \
+	   ft_strlen.c ft_strdup.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c \
+	   ft_strnstr.c ft_strncmp.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
+	   ft_strmapi.c ft_striteri.c ft_strcmp.c ft_isspace.c \
+	   ft_printf.c \
+	   get_next_line.c get_next_line_utils.c \
+	   ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
+	   ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
+DIR_SRC = ./src
+DIR_OBJ = $(DIR_SRC)/obj
+OBJS = $(addprefix $(DIR_OBJ)/,$(SRCS:.c=.o))
 
-RM = rm -fr
+AR		= ar rcs
+RM		 = rm -fr
+CFLAGS	= -Wall -Wextra -Werror
+CC = gcc
 
-INCL = libft.h
-SRCS = ft_atoi.c ft_itoa.c ft_putchar.c ft_putstr.c ft_putnbr.c ft_putchar_fd.c\
-	   ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_isalpha.c ft_isdigit.c\
-	   ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c ft_tolower.c ft_memset.c\
-	   ft_bzero.c ft_memcmp.c ft_memmove.c ft_memchr.c ft_memcpy.c ft_calloc.c\
-	   ft_strlen.c ft_strdup.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c\
-	   ft_strnstr.c ft_strncmp.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c\
-	   ft_strmapi.c ft_striteri.c\
-	   ft_printf.c ft_putchar_error.c\
-	   get_next_line.c get_next_line_utils.c\
+all:		$(DIR_OBJ) ${NAME}
 
-OBJS = $(SRCS:%.c=%.o)
-DEPS = $(SRCS:%.c=%.d)
+$(DIR_OBJ):
+				@mkdir -p $(DIR_OBJ)
 
-CFLAGS = -Wall -Wextra -Werror -MMD -g
-
-#------------------------------------EXECUTE-----------------------------------#
-
-.SILENT:
-
-%.o: %.c Makefile
-	$(CC) $(CFLAGS) -c $< -o $@
-
-all: $(NAME)
+$(DIR_OBJ)/%.o: $(DIR_SRC)/%.c Makefile ./inc/libft.h
+				@printf "\033[0;33m\r🔨 $< ✅ \033[0m"
+				@$(CC) $(CFLAGS) -c $< -o $@ 
 
 $(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
-	clear
+				@$(AR) $(NAME) $(OBJS)
+				@printf "\n"
 
-#-------------------------------------CLEAN------------------------------------#
+c clean:
+				${RM} ${OBJS}
 
-clean:
-	$(RM) $(OBJS) $(DEPS)
+f fclean:		clean
+				${RM} ${NAME} ${DIR_OBJ}
 
-fclean: clean
-	$(RM) $(NAME)
+r re:			fclean all
 
-re: fclean all
-
--include $(DEPS)
-
-.PHONY: all clean fclean re
-.SILENT:
+.PHONY:		clean fclean re all
+.SILEN:
