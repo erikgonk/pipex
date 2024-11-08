@@ -6,7 +6,7 @@
 #    By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/12 11:21:29 by erigonza          #+#    #+#              #
-#    Updated: 2024/09/20 18:04:38 by erigonza         ###   ########.fr        #
+#    Updated: 2024/11/08 12:35:33 by erigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ SRCS = ft_atoi.c ft_itoa.c ft_putchar.c ft_putstr.c ft_putnbr.c ft_putchar_fd.c 
 	   ft_strnstr.c ft_strncmp.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
 	   ft_strmapi.c ft_striteri.c ft_strcmp.c ft_isspace.c \
 	   ft_printf.c \
-	   get_next_line.c get_next_line_utils.c \
 	   ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
 	   ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
 DIR_SRC = ./src
